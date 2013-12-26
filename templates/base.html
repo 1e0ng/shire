@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shire</title>
+        <link href="{{static_url('css/bootstrap.min.css')}}" rel="stylesheet" media="screen">
+        <link href="{{static_url('css/shire.css')}}" rel="stylesheet" media="screen">
+        {% block css %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            <div class="navbar navbar-inverse" role="navigation">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Shire</a>
+                </div>
+                <div class="nav-collapse collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+
+                      {% block nav_items %}
+                        {% for href, id, caption in navigation_bar %}
+                        <li{% if active_page and id == active_page or request.path == href %} class="active"{% endif%}>
+                        <a href="{{ href|e }}">{{ caption|e }}</a>
+                        </li>
+                        {% endfor %}
+                      {% endblock %}
+                    </ul>
+                    <div class="nav navbar-nav navbar-right">
+                      {% block navbar_form %}
+                      {% endblock %}
+                      <ul class="nav navbar-nav">
+                          {% if current_user %}
+                          <li><a href="{{prefix}}/account"><i class="glyphicon glyphicon-user"></i> &nbsp; {{current_user['email']}}</a></li>
+                          <li>
+                          <a href="{{handler.get_logout_url()}}" id="signout">Sign out</a>
+                          </li>
+                          {% else %}
+                          <li>
+                          <a href="{{handler.get_login_url()}}" id="signin">Sign in</a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                {% block body %}
+                {% endblock %}
+            </div>
+
+            <footer class="footer">
+                <p>
+                Powered by <a href="https://github.com/liangsun/shire">shire</a>.
+                <p>
+            </footer>
+
+            {{ xsrf_form_html() }}
+
+            {% if handler.application.settings.debug %}
+            <div class="debug" style="position:fixed; right: 10px; bottom: 10px; border: 1px solid grey">
+              <span style="color: {{'red' if request.request_time() > 0.2 else 'green'}}">Page processed in {{(request.request_time() * 1000)|round(2)}}ms.</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <script src="{{static_url('js/jquery-1.10.2.min.js')}}"></script>
+        <script src="{{static_url('js/jquery.cookie.js')}}"></script>
+        <script src="{{static_url('js/bootstrap.min.js')}}"></script>
+        <script src="{{static_url('js/shire.js')}}"></script>
+
+        {% block js %}
+        {% endblock %}
+    </body>
+</html>
