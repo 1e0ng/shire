@@ -17,7 +17,6 @@ from bson.json_util import dumps, loads
 from bson.objectid import ObjectId
 from pymongo.errors import DuplicateKeyError
 
-from lib.escape import json_encode
 from lib.mail import send as send_mail
 
 from lib import data_file
@@ -74,15 +73,6 @@ class BaseHandler(RequestHandler):
 
     def has_argument(self, name):
         return name in self.request.arguments
-
-    def write(self, chunk):
-        """
-        override write to support our json_encode
-        """
-        if isinstance(chunk, dict):
-            chunk = json_encode(chunk)
-            self.set_header("Content-Type", "application/json; charset=UTF-8")
-        super(BaseHandler, self).write(chunk)
 
     def write_error(self, status_code, **kwargs):
         if status_code == 403:
