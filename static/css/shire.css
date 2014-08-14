@@ -39,7 +39,7 @@ q:before, q:after{
 }
 
 .content {
-    min-height:460px;
+    min-height:500px;
 }
 .right{
     float:right;
