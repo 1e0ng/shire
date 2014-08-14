@@ -64,13 +64,13 @@
             {{ xsrf_form_html() }}
 
             {% if handler.application.settings.debug %}
-            <div class="debug" style="position:fixed; right: 10px; bottom: 10px; border: 1px solid grey">
-              <span style="color: {{'red' if request.request_time() > 0.2 else 'green'}}">Page processed in {{(request.request_time() * 1000)|round(2)}}ms.</span>
+            <div class="debug" style="position:fixed; right: 10px; bottom: 10px">
+              <span style="color: {{'red' if request.request_time() > 0.2 else 'green'}}">Page processed in {{(request.request_time() * 1000)|round(2)}}ms</span>
             </div>
             {% endif %}
         </div>
 
-        <script src="{{static_url('js/jquery-1.10.2.min.js')}}"></script>
+        <script src="{{static_url('js/jquery-1.11.1.min.js')}}"></script>
         <script src="{{static_url('js/jquery.cookie.js')}}"></script>
         <script src="{{static_url('js/bootstrap.min.js')}}"></script>
         <script src="{{static_url('js/shire.js')}}"></script>
