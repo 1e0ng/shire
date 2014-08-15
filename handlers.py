@@ -95,6 +95,7 @@ class BaseHandler(RequestHandler):
         kwargs['navigation_bar'] = [i for i in [
             ('/users', 'users', 'Users'),
         ] if self.has_permission(i[0])]
+        kwargs['site'] = 'Shire'
 
         return super(BaseHandler, self).render(template, **kwargs)
 
