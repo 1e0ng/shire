@@ -198,12 +198,12 @@ class UserHandler(BaseHandler):
         if insert:
             plain_pwd = gen_salt()
             salt = gen_salt()
-            pwd = hash_pwd(plain_pwd, salt)
+            pwd = hash_pwd(plain_pwd, mail)
 
         if pwd:
             user.update({
                 'salt':salt,
-                'pwd': pwd,
+                'pwd': hash_pwd(pwd, salt),
             })
 
         if insert:
@@ -216,7 +216,7 @@ class UserHandler(BaseHandler):
 
             if insert:
                 send_mail(mail,
-                    'Your New Account At %s' % self.get_main_domain,
+                    'Your New Account At %s' % self.request.host,
                     'Hi, %s!<br>' % name +
                     'a new accont has been created for you. <br>' +
                     'Username: %s<br>' % mail +
