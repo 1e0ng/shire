@@ -197,6 +197,7 @@ class UserHandler(BaseHandler):
 
         if insert:
             plain_pwd = gen_salt()
+            salt = gen_salt()
             pwd = hash_pwd(plain_pwd, salt)
 
         if pwd:
