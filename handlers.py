@@ -31,6 +31,8 @@ class BaseHandler(RequestHandler):
     ]
 
     def has_permission(self, path):
+        if path  == '/users' or path.startswith('/user/'):
+            return self.r % 100 == 0
         return True
 
     def prepare(self):
