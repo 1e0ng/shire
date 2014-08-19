@@ -171,7 +171,7 @@ class UserHandler(BaseHandler):
         user = self.db.user.find_one({'_id': ObjectId(uid)}) if uid else {}
         user['valid'] = not user['valid'];
         self.db.user.save(user)
-        self.write(self.dumps(dict(ok=1)))
+        self.write(dict(ok=1))
 
     def save(self, uid):
         mail = self.get_argument('mail')
@@ -181,7 +181,7 @@ class UserHandler(BaseHandler):
         salt = self.get_argument('new_salt')
 
         if re.match(r'^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$', mail) is None:
-            self.write(self.dumps(dict(error_msg='invalid mail')))
+            self.write(dict(error_msg='invalid mail'))
             return
 
         #logging.info('uid:%s, mail:%s, pwd:%s, role:%s' % (uid, mail, '***', role))
@@ -225,9 +225,9 @@ class UserHandler(BaseHandler):
                     'Thanks.',
                     )
 
-            self.write(self.dumps(dict(ok=1)))
+            self.write(dict(ok=1))
         except DuplicateKeyError:
-            self.write(self.dumps(dict(error_msg='duplicate mail')))
+            self.write(dict(error_msg='duplicate mail'))
 
 class AccountHandler(BaseHandler):
     def get(self):
@@ -249,7 +249,7 @@ class AccountHandler(BaseHandler):
         new_salt = self.get_argument('new_salt', '')
 
         if cpwd != user['pwd']:
-            self.write(self.dumps(dict(error_msg='Current password not correct.')))
+            self.write(dict(error_msg='Current password not correct.'))
             return
 
         user.update({
@@ -258,7 +258,7 @@ class AccountHandler(BaseHandler):
             'salt': new_salt,
         })
         self.db.user.save(user)
-        self.write(self.dumps(dict(ok=1)))
+        self.write(dict(ok=1))
 
 class SigninHandler(BaseHandler):
     allow_anony = True
@@ -276,14 +276,14 @@ class SigninHandler(BaseHandler):
 
         user = self.db.user.find_one({'mail': mail})
         if user is None:
-            self.write(self.dumps(dict(error_msg='User not exist.')))
+            self.write(dict(error_msg='User not exist.'))
             return
         if hash_pwd(pwd, user['salt']) != user['pwd']:
-            self.write(self.dumps(dict(error_msg='Password incorrect.')))
+            self.write(dict(error_msg='Password incorrect.'))
             return
 
         if not user['valid']:
-            self.write(self.dumps(dict(error_msg='Account banned.')))
+            self.write(dict(error_msg='Account banned.'))
             return
 
         user['last_login_time'] = time.time()
@@ -306,7 +306,7 @@ class SigninHandler(BaseHandler):
             domain=self.get_main_domain()
         )
 
-        self.write(self.dumps(dict(url=self.get_next_url(user['role']))))
+        self.write(dict(url=self.get_next_url(user['role'])))
 
     def get_next_url(self, role):
         referer = self.request.headers.get('Referer')
