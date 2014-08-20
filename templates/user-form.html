@@ -65,12 +65,7 @@
 
 {% block js %}
 <script src="/static/js/sha1.js"></script>
-
 <script>
-function hash(str){
-    return CryptoJS.SHA1(str).toString(CryptoJS.enc.Hex).slice(0, 16);
-}
-
 $(function() {
     var url = window.location.pathname;
     $('.save').click(function() {
@@ -80,7 +75,7 @@ $(function() {
         var pwd = $('#pwd').val();
 
         if (pwd) {
-            pwd = hash(pwd + '|' + mail);
+            pwd = hash(pwd, mail);
         }
 
         shire.gui_post(url, {'mail': mail, 'name': name, 'role': role, 'action':'save', 'pwd': pwd}, function() {
