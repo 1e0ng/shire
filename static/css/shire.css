@@ -45,7 +45,7 @@ q:before, q:after{
     float:right;
 }
 .left{
-    float:right;
+    float:left;
 }
 
 .draggable{
