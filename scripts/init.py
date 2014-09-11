@@ -28,5 +28,7 @@ class Runner(Scaffold):
 
         logging.info('root user created.')
 
+        self.db.user.ensure_index([('mail', 1)], unique=True)
+
 if __name__ == '__main__':
     Runner().run()
